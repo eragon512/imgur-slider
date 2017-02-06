@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{album_data.title}}</title>
+    {% load staticfiles %}
+    <link rel="stylesheet" href="{% static 'offline_storage/bootstrap/css/bootstrap.min.css' %}">
+  </head>
+  <body>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-lg-6 col-lg-offset-3 ">
+          <form class="navbar-form navbar-left" action="" role="search" method="POST">
+            {% csrf_token %}
+            {{ form }}
+            <button type="submit" class="btn btn-default">Submit</button>
+          </form>
+        </div>
+      </div>
+    </nav>
+  offline_storage album_list
+    {% for album in album_list %}
+      <a href="/offline/album/{{album.album_id}}">{{album.title}}</a>
+    {% endfor %}
+
+    <!-- Scripts at the bottom of the page -->
+    {% load staticfiles %}
+    <script src="{% static 'offline_storage/bootstrap/js/jquery.min.js' %}"></script>
+    <script src="{% static 'offline_storage/bootstrap/js/bootstrap.min.js' %}"></script>
+  </body>
+</html>
