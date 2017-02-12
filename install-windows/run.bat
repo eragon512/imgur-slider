@@ -1,4 +1,4 @@
-start workon ../venv-win
+workon venv-win
 cd ../slider
-start python3 manage.py runserver
+python manage.py runserver
 start http://127.0.0.1/offline/album/
