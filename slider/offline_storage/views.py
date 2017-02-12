@@ -2,7 +2,10 @@ from django.shortcuts import render
 from django.http import HttpResponse,HttpRequest,HttpResponseRedirect
 from django.conf import settings
 from django.utils import timezone
-from offline_storage import models,forms,imgur,download
+
+from offline_storage.models import *
+from offline_storage.forms import *
+from offline_storage import imgur,download
 
 # Create your views here.
 def index(request):
