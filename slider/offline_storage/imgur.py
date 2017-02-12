@@ -1,4 +1,4 @@
-import re,os,sys
+import re, os, sys
 from bs4 import BeautifulSoup
 import requests
 
@@ -24,31 +24,25 @@ def extract(album_id):
 	postList = dataSoup.find_all("div","post-image-container")
 	find_queue = []
 
-	for pos,post in enumerate(postList):
+	for post in postList:
 		new_post_url = img_url(post)
 		if new_post_url == "":
-			find_queue.append((pos,post["id"]))
+			new_post_url = getImgUrl(post["id"])
 		album_data["posts"].append({
 			"id": post["id"],
-			"text": offline_convert(post.find_all("div","post-image-meta")[0].prettify()),
+			"text": purify_imgtext(str(post.find("div","post-image-meta"))),
 			"url": new_post_url,
 			"path": "offline_storage/images/"+album_data["id"]+"/"+os.path.basename(new_post_url),
 		})
 		sys.stdout.write("extract: "+new_post_url+"\n")
-
-	for pos,post_id in find_queue:
-		new_post_url = getImgUrl(post_id)
-		album_data["posts"][pos]["url"] = new_post_url
-		album_data["posts"][pos]["path"] = "offline_storage/images/"+album_data["id"]+"/"+os.path.basename(new_post_url)
-	sys.stdout.write("\n\n")
-	sys.stdout.write(repr(album_data))
-	sys.stdout.write("\n\n")
+	sys.stdout.write("\n\n-----------image url extraction finished ----------------\n\n")
 	return album_data
 
 def getImgUrl(post_id):
 	req_text = requests.get("http://imgur.com/"+post_id).text
-	tmp_soup = BeautifulSoup(req_text,"html5lib")
-	return img_url(tmp_soup)
+	url = "//i.imgur.com/"+str(re.findall("src=\"//i.imgur.com/(.*)\" alt", req_text)[0])
+	sys.stdout.write("redo-extract: http://imgur.com/"+post_id+"\n")
+	return url
 
 def img_url(soup):
     url = ""
@@ -65,6 +59,9 @@ def img_url(soup):
         return url
     finally:
         return url
+
+def purify_imgtext(text):
+	return offline_convert(text.replace(". ", ".<br/>"))
 
 def offline_convert(text):
 	return text.replace("http://imgur.com/a/", "/offline/album/")

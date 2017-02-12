@@ -58,7 +58,6 @@ def view_album(request,album_id):
 def add_album(album_id):
 	album = imgur.extract(album_id)
 	a = Album.objects.create(album_id=album_id,title=album["title"],source=album["source"],download_date=timezone.now(),)
-	print (a)
 
 	img_list = []
 	for post in album["posts"]:
