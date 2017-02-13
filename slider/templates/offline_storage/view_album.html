@@ -46,6 +46,18 @@
         </div>
     </div>
     {% for post in album_posts %}
+    {% if post.text == "None" %}
+    <div class="row vertical-align" id="{{post.post_id}}">
+      <div class="col-md-12">
+          <div class="vertical-align black">
+              {% load staticfiles %}
+              <img class="img-responsive center-block" src="{% static post.image_path %}" />
+            <!--<img class="img-responsive center-block" srcset="{% static post.image_path %} http:{{ post.image_url }}" />-->
+          </div>
+      </div>
+      </div>
+    </div>
+    {% else %}
     <div class="row vertical-align" id="{{post.post_id}}">
       <div class="col-md-9">
           <div class="vertical-align black">
@@ -62,6 +74,7 @@
         </div>
       </div>
     </div>
+    {% endif %}
     {% endfor %}
 
     <!-- Scripts at the bottom of the page -->

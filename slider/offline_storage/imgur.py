@@ -24,22 +24,37 @@ def extract(album_id):
 	postList = dataSoup.find_all("div","post-image-container")
 	find_list = []
 
-	for post in postList:
+	for pos,post in enumerate(postList):
 		new_post_url = img_url(post)
 		if new_post_url == "":
-			new_post_url = getImgUrl(post["id"])
+			find_list.append((pos,post["id"]))
 		album_data["posts"].append({
 			"id": post["id"],
 			"text": purify_imgtext(str(post.find("div","post-image-meta"))),
 			"url": new_post_url,
-			"path": os.path.join("offline_storage","images",album_data["id"],new_post_url.split('/')[3]),
+			"path": os.path.join("offline_storage","images",album_data["id"],os.path.basename(new_post_url)),
 		})
 		sys.stdout.write("extract: "+new_post_url+"\n")
+
+	url_list = getImgUrlList(find_list)
+	for pos,url in url_list:
+		album_data["posts"][pos]["url"] = url
+		album_data["posts"][pos]["path"] = os.path.join("offline_storage","images",album_data["id"],os.path.basename(url))
+
 	sys.stdout.write("\n\n-----------image url extraction finished ----------------\n\n")
 	return album_data
 
+import multiprocessing
 def getImgUrlList(post_list):
-	pass
+	pool = multiprocessing.Pool(processes=8)
+	url_list = pool.starmap(getImgUrlListWorker,post_list)
+	pool.close()
+	pool.join()
+	return url_list
+
+def getImgUrlListWorker(pos,post_id):
+	return (pos,getImgUrl(post_id))
+
 def getImgUrl(post_id):
 	req_text = requests.get("http://imgur.com/"+post_id).text
 	tmp_soup = BeautifulSoup(req_text,"html5lib")
