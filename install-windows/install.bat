@@ -1,6 +1,6 @@
-python -m pip install -U pip
-pip install virtualenvwrapper-win
-mkvirtualenv venv-win
-workon venv-win
-cd ..
-pip install -r requirements.txt
+call python -m pip install -U pip
+call pip install virtualenvwrapper-win
+call mkvirtualenv venv-win
+call workon venv-win
+call cd ..
+call pip install -r requirements.txt
