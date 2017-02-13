@@ -1,4 +1,4 @@
-import re, os, sys
+import re, os, sys, multiprocessing
 from bs4 import BeautifulSoup
 import requests
 
@@ -44,7 +44,6 @@ def extract(album_id):
 	sys.stdout.write("\n\n-----------image url extraction finished ----------------\n\n")
 	return album_data
 
-import multiprocessing
 def getImgUrlList(post_list):
 	pool = multiprocessing.Pool(processes=8)
 	url_list = pool.starmap(getImgUrlListWorker,post_list)
