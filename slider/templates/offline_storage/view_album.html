@@ -49,22 +49,13 @@
     <div class="row vertical-align" id="{{post.post_id}}">
       <div class="col-md-9">
           <div class="vertical-align black">
-            <picture class="center-block">
-              {% load staticfiles %}
-              <source src="{{ 'http:'|add:post.image_url }}">
               {% load staticfiles %}
               <img class="img-responsive center-block" src="{% static post.image_path %}" />
-            </picture>
             <!--<img class="img-responsive center-block" srcset="{% static post.image_path %} http:{{ post.image_url }}" />-->
           </div>
       </div>
       <div class="col-md-3">
         <div class="">
-          <nav class="navbar-fixed-top">
-            <div class="container">
-
-            </div>
-          </nav>
           {% autoescape off %}
           {{post.text}}
           {% endautoescape %}

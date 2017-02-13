@@ -1,4 +1,4 @@
-import re, os, sys, multiprocessing
+import re, os, sys
 from bs4 import BeautifulSoup
 import requests
 
@@ -22,7 +22,7 @@ def extract(album_id):
 	dataSoup = BeautifulSoup(data,"html5lib")
 	#print album_data
 	postList = dataSoup.find_all("div","post-image-container")
-	find_queue = []
+	find_list = []
 
 	for post in postList:
 		new_post_url = img_url(post)
@@ -38,6 +38,8 @@ def extract(album_id):
 	sys.stdout.write("\n\n-----------image url extraction finished ----------------\n\n")
 	return album_data
 
+def getImgUrlList(post_list):
+	pass
 def getImgUrl(post_id):
 	req_text = requests.get("http://imgur.com/"+post_id).text
 	tmp_soup = BeautifulSoup(req_text,"html5lib")
@@ -64,4 +66,6 @@ def purify_imgtext(text):
 	return offline_convert(text.replace(". ", ".<br/>"))
 
 def offline_convert(text):
-	return text.replace("http://imgur.com/a/", "/offline/album/")
+	text = text.replace("https://imgur.com/a/", "/offline/album/")
+	text = text.replace("http://imgur.com/a/", "/offline/album/")
+	return text
