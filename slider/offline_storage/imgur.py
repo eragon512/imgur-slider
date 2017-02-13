@@ -1,4 +1,4 @@
-import re, os, sys
+import re, os, sys, multiprocessing
 from bs4 import BeautifulSoup
 import requests
 
@@ -32,7 +32,7 @@ def extract(album_id):
 			"id": post["id"],
 			"text": purify_imgtext(str(post.find("div","post-image-meta"))),
 			"url": new_post_url,
-			"path": "offline_storage/images/"+album_data["id"]+"/"+os.path.basename(new_post_url),
+			"path": os.path.join("offline_storage","images",album_data["id"],new_post_url.split('/')[3]),
 		})
 		sys.stdout.write("extract: "+new_post_url+"\n")
 	sys.stdout.write("\n\n-----------image url extraction finished ----------------\n\n")
@@ -40,9 +40,9 @@ def extract(album_id):
 
 def getImgUrl(post_id):
 	req_text = requests.get("http://imgur.com/"+post_id).text
-	url = "//i.imgur.com/"+str(re.findall("src=\"//i.imgur.com/(.*)\" alt", req_text)[0])
+	tmp_soup = BeautifulSoup(req_text,"html5lib")
 	sys.stdout.write("redo-extract: http://imgur.com/"+post_id+"\n")
-	return url
+	return img_url(tmp_soup)
 
 def img_url(soup):
     url = ""
