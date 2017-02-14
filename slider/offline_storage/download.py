@@ -19,7 +19,7 @@ def store(url, path):
 	try:
 		store_routine(url,path)
 	except Exception as e:
-		sys.stdout.write("exception: store:"+url+"\n")
+		sys.stdout.write("exception: store: "+url+" - "+repr(e)+"\n")
 		store_routine(url,path)
 	return
 

@@ -33,6 +33,9 @@
         width: auto;
         height: auto;
       }
+      a {
+        cursor: pointer;
+      }
     </style>
   </head>
   <body class="container-fluid">
@@ -42,11 +45,11 @@
           {% autoescape off %}
           <h2>by {{album_data.source}}</h2><br>
           {% endautoescape %}
-          <p><a href="#{{album_posts.0.post_id}}">Click</a> to begin...</p>
+          <p><a onclick="startSlideshow()">Click</a> to begin...</p>
         </div>
     </div>
     {% for post in album_posts %}
-    {% if post.text == "None" %}
+    {% if post.text == "None" or post.text == "" %}
     <div class="row vertical-align" id="{{post.post_id}}">
       <div class="col-md-12">
           <div class="vertical-align black">
@@ -82,29 +85,47 @@
     <script src="{% static 'offline_storage/bootstrap/js/jquery.min.js' %}"></script>
     <script src="{% static 'offline_storage/bootstrap/js/bootstrap.min.js' %}"></script>
     <script type="text/javascript">
+      function fullScreen() {
+        var element = document.body;
+        var requestMethod = element.requestFullScreen || element.webkitRequestFullScreen || element.mozRequestFullScreen || element.msRequestFullScreen;
+        if(typeof requestMethod != "undefined" && requestMethod){
+          requestMethod.call(element);
+        }
+      }
       id_list = {{ album_post_ids | safe }}
       function scrollNext() {
         if(index < id_list.length-1) {
           index++;
-          document.getElementById(id_list[index]).scrollIntoView();
+          document.getElementById(id_list[index]).scrollIntoView({block: "start", behavior: "smooth"});
           console.log(id_list[index]);
         }
       };
       function scrollPrev() {
         if(index > 0) {
           index--;
-          document.getElementById(id_list[index]).scrollIntoView();
+          document.getElementById(id_list[index]).scrollIntoView({block: "start", behavior: "smooth"});
           console.log(id_list[index]);
         }
       };
       function nextAlbum(link) {
         link.onclick();
       }
-      var index=0;
+      var index=-1;
       var paused = true;
       var timer_var;
 
-      document.getElementsByTagName("body")[0].addEventListener("click",spaceListenerFunction);
+      document.addEventListener("fullscreenchange",fullScreenToggleFunction);
+      function fullScreenToggleFunction() {
+        if (!document.fullscreenEnabled) {
+          // user has quit fullscreen
+          scrollPrev();
+        }
+        else {
+          scrollNext();
+        }
+      };
+
+      //document.getElementsByTagName("body")[0].addEventListener("click",spaceListenerFunction);
       document.getElementsByTagName("body")[0].addEventListener("keydown",keyboardListenerFunction);
       function keyboardListenerFunction(event) {
         event = event || window.event;
@@ -130,7 +151,12 @@
           scrollNext();
         }
       };
-      function spaceListenerFunction() {
+
+      function startSlideshow() {
+        fullScreen();
+        scrollNext();
+      };
+      /*function spaceListenerFunction() {
         console.log("spaceListenerFunction");
         document.getElementById("start").remove();
         if(paused) {
@@ -142,7 +168,7 @@
           clearInterval(timer_var);
         }
         paused = !(paused);
-      }
+      }/**/
     </script>
   </body>
 </html>
