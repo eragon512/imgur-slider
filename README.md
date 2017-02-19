@@ -32,3 +32,11 @@ Make sure to check the 'Add Python to PATH option'
 3. Copy and paste the Imgur album URL in the given text field and click `Submit`
 
 4. Enjoy!!
+
+##How to Use
+
+1. To start a slideshow, click on the `Click` link to enter fullscreen and start the slideshow
+
+2. (Down Arrow) Next Image
+(Up Arrow) Previous Image
+(Right Arrow) Load the description link Imgur album if one exists
