@@ -11,7 +11,7 @@ Hands-Free automated slideshow for Imgur Albums
 ###For Windows
 
 1. Download the repo as a zip file
-2. Extract the zip file to wherever you want to keet the project
+2. Extract the zip file to wherever you want to keep it
 3. Open the `install-windows` folder
 
 4. Run the `python3.6.0.exe` file to install Python
@@ -20,4 +20,15 @@ Make sure to check the 'Add Python to PATH option'
 5. Run the install.bat file to install the prerequisites
 
 6. The Installation is Complete!!
-To run the server, run the run.bat file
+
+##How to Run
+
+###For Windows
+
+1. Run the run.bat file
+
+2. Type the following in your browser `127.0.0.1:8000/offline/album/`
+
+3. Copy and paste the Imgur album URL in the given text field and click `Submit`
+
+4. Enjoy!!
