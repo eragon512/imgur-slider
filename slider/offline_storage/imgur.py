@@ -1,7 +1,10 @@
 import re, os, sys, multiprocessing
 from bs4 import BeautifulSoup
 import requests
-import urllib.parse
+try:
+	import urllib.parse as urlparse
+except ImportError:
+	from urlparse import urlparse
 
 def extract(album_id):
 	req = requests.get("http://imgur.com/a/"+album_id)
@@ -92,7 +95,7 @@ def img_url(soup):
 
 def url_filename(url):
 	# 2 - path
-	path = urllib.parse.urlsplit(url)[2].strip('/')
+	path = urlparse.urlsplit(url)[2].strip('/')
 	filename = path.split('/')[-1]
 	return filename
 
