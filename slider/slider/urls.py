@@ -20,6 +20,5 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^offline/', include('offline_storage.urls')),
-    url(r'^online/', include('online.urls')),
     url(r'^admin/', admin.site.urls),
 ]
