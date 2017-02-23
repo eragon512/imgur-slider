@@ -102,7 +102,7 @@ def img_url(soup):
 
 def url_filename(url):
 	# 2 - path
-	path = urlparse.urlsplit(url)[2].strip('/')
+	path = urlparse.urlsplit(url).path.strip('/')
 	filename = path.split('/')[-1]
 	return filename
 

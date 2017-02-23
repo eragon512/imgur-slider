@@ -21,7 +21,7 @@ def album_list(request):
 			#http:,'',imgur.com,'a','album_id'
 			album_id = album_url.split('/')[4]
 			print (album_id)
-			return HttpResponseRedirect("/offline/album/"+album_id)
+			return album(request,album_id)
 	else:
 		album_list = Album.objects.all()
 		form = AlbumUrlForm()

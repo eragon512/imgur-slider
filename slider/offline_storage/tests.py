@@ -18,9 +18,10 @@ class AlbumDownloadTestCase(unittest.TestCase):
         response = album(request,'pyyvA')
         self.assertEqual(response.status_code, 200)
     # still not working right
-    #def test_form_process(self):
-        #request = self.client.post('/offline/album/',{"album_url": "http://imgur.com/a/MUsSI"})
+
+    def test_form_process(self):
+        response = self.client.post('/offline/album/',{'album_url': 'http://imgur.com/a/MUsSI'})
+        self.assertEqual(response.status_code, 200)
         #response = album_list(request)
         #response.client = self.client
         #self.assertRedirects(response, reverse("/offline/album/"))
-        #self.assertEqual(redirect.status_code, 200)
