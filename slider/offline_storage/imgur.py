@@ -3,8 +3,10 @@ from bs4 import BeautifulSoup
 import requests
 try:
 	import urllib.parse as urlparse
+# if python2
 except ImportError:
-	from urlparse import urlparse
+	import urlparse
+	import itertools
 
 def extract(album_id):
 	req = requests.get("http://imgur.com/a/"+album_id)
@@ -48,11 +50,16 @@ def extract(album_id):
 	return album_data
 
 def getImgUrlList(post_list):
-	pool = multiprocessing.Pool(processes=8)
-	url_list = pool.starmap(getImgUrlListWorker,post_list)
-	pool.close()
-	pool.join()
-	return url_list
+	try:
+		pool = multiprocessing.Pool(processes=8)
+		url_list = pool.starmap(getImgUrlListWorker,post_list)
+		pool.close()
+		pool.join()
+	# if python2, then pool.starmap gives attribute
+	except AttributeError:
+		url_list = list(itertools.starmap(getImgUrlListWorker,post_list))
+	finally:
+		return url_list
 
 def getImgUrlListWorker(pos,post_id):
 	return (pos,getImgUrl(post_id))
