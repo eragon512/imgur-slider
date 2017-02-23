@@ -37,6 +37,18 @@ Make sure to check the 'Add Python to PATH option'
 
 1. To start a slideshow, click on the `Click` link to enter fullscreen and start the slideshow
 
-2. (Down Arrow) Next Image
-(Up Arrow) Previous Image
-(Right Arrow) Load the description link Imgur album if one exists
+2. 
+
+```
+(Down Arrow) -  Next Image 
+(Up Arrow)   -  Previous Image
+(Right Arrow)- Load the description link Imgur album if one exists
+```
+
+##Known issues and fixes
+
+1. 'You have x unapplied migrations, .. run python manage.py migrate to apply them'
+```
+* run migrate.bat to apply the migrations
+* run run.bat to start the server again 
+```
