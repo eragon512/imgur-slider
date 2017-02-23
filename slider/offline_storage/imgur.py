@@ -5,8 +5,7 @@ try:
 	import urllib.parse as urlparse
 # if python2
 except ImportError:
-	import urlparse
-	import itertools
+	import urlparse, itertools, functools
 
 def extract(album_id):
 	req = requests.get("http://imgur.com/a/"+album_id)
@@ -55,13 +54,22 @@ def getImgUrlList(post_list):
 		url_list = pool.starmap(getImgUrlListWorker,post_list)
 		pool.close()
 		pool.join()
-	# if python2, then pool.starmap gives attribute
+		return url_list
+	# if python2, then pool.starmap gives attributeerror
 	except AttributeError:
-		url_list = list(itertools.starmap(getImgUrlListWorker,post_list))
-	finally:
+		args = ((pos, post_id) for pos,post_id in post_list)
+		pool = multiprocessing.Pool(processes=8)
+		url_list = pool.map(getImgUrlListWorker2,args)
+		pool.close()
+		pool.join()
 		return url_list
 
 def getImgUrlListWorker(pos,post_id):
+	return (pos,getImgUrl(post_id))
+
+# python2 compatible wrapper worker
+def getImgUrlListWorker2(args):
+	pos,post_id = args
 	return (pos,getImgUrl(post_id))
 
 def getImgUrl(post_id):
